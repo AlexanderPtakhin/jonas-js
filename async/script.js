@@ -203,7 +203,7 @@ const countriesContainer = document.querySelector('.countries');
 //               </div>
 //             </article>`;
 //   countriesContainer.insertAdjacentHTML('beforeend', html);
-//   // countriesContainer.style.opacity = 1;
+//   countriesContainer.style.opacity = 1;
 // };
 
 // const renderError = function (msg) {
@@ -347,42 +347,156 @@ const countriesContainer = document.querySelector('.countries');
 // });
 // console.log('test end');
 
-const lotteryPromise = new Promise(function (resolve, reject) {
-  console.log('Розыгрыш начался 🔮');
+// const lotteryPromise = new Promise(function (resolve, reject) {
+//   console.log('Розыгрыш начался 🔮');
 
-  setTimeout(() => {
-    if (Math.random() >= 0.5) {
-      resolve('Вы выиграли 💰');
-    } else {
-      reject(new Error('You lost your money 💩'));
-    }
-  }, 2000);
-});
+//   setTimeout(() => {
+//     if (Math.random() >= 0.5) {
+//       resolve('Вы выиграли 💰');
+//     } else {
+//       reject(new Error('You lost your money 💩'));
+//     }
+//   }, 2000);
+// });
 
-lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+// lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+
+// const wait = function (seconds) {
+//   return new Promise(resolve => {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+// wait(1)
+//   .then(() => {
+//     console.log('I waited for 1 seconds');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('I waited for 2 seconds');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('I waited for 3 seconds');
+//     return wait(1);
+//   })
+//   .then(() => console.log('I waited for 4 seconds'));
+
+// Promise.resolve('abc').then(res => console.log(res));
+// Promise.reject(new Error('Problem!')).catch(res => console.error(res));
+
+// const getPosition = function () {
+//   return new Promise(function (resolve, reject) {
+//     // navigator.geolocation.getCurrentPosition(
+//     //   position => resolve(position),
+//     //   err => reject(err),
+//     // );
+//     navigator.geolocation.getCurrentPosition(resolve, reject);
+//   });
+// };
+
+// getPosition().then(pos => console.log(pos.coords));
+
+// const whereAmI = function () {
+//   getPosition()
+//     .then(pos => {
+//       const { latitude: lat, longitude: lng } = pos.coords;
+//       const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+//       return fetch(url, {
+//         headers: {
+//           'User-Agent': 'JsCoursePractice/1.0 (your-real-email@example.com)',
+//         },
+//       });
+//     })
+//     .then(response => {
+//       if (!response.ok)
+//         throw new Error(`Проблема с геолокацией (${response.status}) 🪥`);
+//       return response.json();
+//     })
+//     .then(data => {
+//       console.log(data);
+
+//       const address = data.address;
+//       const country = address.country;
+
+//       const city =
+//         address.city ||
+//         address.town ||
+//         address.village ||
+//         address.hamlet ||
+//         address.municipality ||
+//         address.city_district ||
+//         'Unknown location';
+
+//       console.log(`Я нахожусь в ${city}, ${country}`);
+
+//       return fetch(`https://restcountries.com/v3.1/name/${country}`);
+//     })
+//     .then(response => {
+//       if (!response.ok)
+//         throw new Error(`Страна не найдена (${response.status})`);
+//       return response.json();
+//     })
+//     .then(data => renderCountry(data[0]))
+//     .catch(err => console.error(`${err.message} 💥💥💥`));
+// };
+// const renderCountry = function (data, className = '') {
+//   const html = `
+//       <article class="country ${className}">
+//               <img class="country__img" src="${data.flags.svg}" />
+//               <div class="country__data">
+//                 <h3 class="country__name">${data.name.common}</h3>
+//                 <h4 class="country__region">${data.region}</h4>
+//                 <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)}</p>
+//                 <p class="country__row"><span>🗣️</span>${Object.values(data.languages)[0]}</p>
+//                 <p class="country__row"><span>💰</span>${Object.values(data.currencies)[0].name}</p>
+//               </div>
+//             </article>`;
+//   countriesContainer.insertAdjacentHTML('beforeend', html);
+//   countriesContainer.style.opacity = 1;
+// };
+
+// btn.addEventListener('click', whereAmI);
 
 const wait = function (seconds) {
   return new Promise(resolve => {
     setTimeout(resolve, seconds * 1000);
   });
 };
-wait(1)
-  .then(() => {
-    console.log('I waited for 1 seconds');
-    return wait(1);
+
+let currentImg;
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const imgEL = document.createElement('img');
+    imgEL.src = imgPath;
+    imgEL.addEventListener('load', () => {
+      document.querySelector('.images').appendChild(imgEL);
+      resolve(imgEL);
+    });
+    imgEL.addEventListener('error', () => {
+      reject(new Error('Изображение не найдено 💩'));
+    });
+  });
+};
+
+// createImage('img/img-1.jpg').then(response => console.log('Изображение загружено', response)
+// ).catch(err => console.error(err.message))
+
+createImage('img/img-1.jpg')
+  .then(img => {
+    currentImg = img;
+    console.log('Картинка 1 загружена');
+    return wait(2);
   })
   .then(() => {
-    console.log('I waited for 2 seconds');
-    return wait(1);
+    currentImg.style.display = 'none';
+    return createImage('img/img-2.jpg');
+  })
+  .then(img => {
+    currentImg = img;
+    console.log('Картинка 2 загружена');
+    return wait(2);
   })
   .then(() => {
-    console.log('I waited for 3 seconds');
-    return wait(1);
+    currentImg.style.display = 'none';
   })
-  .then(() => console.log('I waited for 4 seconds'));
-
-
-
-Promise.resolve('abc').then(res => console.log(res))
-Promise.reject(new Error('Problem!')).catch(res => console.error(res)
-)
+  .catch(err => console.log(`💥 ${err.message}`));
