@@ -338,11 +338,51 @@ const countriesContainer = document.querySelector('.countries');
 // whereAmI(19.037, 2.873);
 // whereAmI(-33.933, 18.474);
 
-console.log('Test start');
-setTimeout(() => console.log('0 sec timer'), 0);
-Promise.resolve('Resolve promise 1').then(res => console.log(res));
-Promise.resolve('Resolve 2').then(res => {
-  for (let i = 0; i < 10000; i++) 
-  console.log(res);
+// console.log('Test start');
+// setTimeout(() => console.log('0 sec timer'), 0);
+// Promise.resolve('Resolve promise 1').then(res => console.log(res));
+// Promise.resolve('Resolve 2').then(res => {
+//   for (let i = 0; i < 10000; i++)
+//   console.log(res);
+// });
+// console.log('test end');
+
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log('Розыгрыш начался 🔮');
+
+  setTimeout(() => {
+    if (Math.random() >= 0.5) {
+      resolve('Вы выиграли 💰');
+    } else {
+      reject(new Error('You lost your money 💩'));
+    }
+  }, 2000);
 });
-console.log('test end');
+
+lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+
+const wait = function (seconds) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+wait(1)
+  .then(() => {
+    console.log('I waited for 1 seconds');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('I waited for 2 seconds');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('I waited for 3 seconds');
+    return wait(1);
+  })
+  .then(() => console.log('I waited for 4 seconds'));
+
+
+
+Promise.resolve('abc').then(res => console.log(res))
+Promise.reject(new Error('Problem!')).catch(res => console.error(res)
+)
