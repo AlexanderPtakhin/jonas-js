@@ -457,19 +457,224 @@ const countriesContainer = document.querySelector('.countries');
 
 // btn.addEventListener('click', whereAmI);
 
+// const wait = function (seconds) {
+//   return new Promise(resolve => {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// let currentImg;
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const imgEL = document.createElement('img');
+//     imgEL.src = imgPath;
+//     imgEL.addEventListener('load', () => {
+//       document.querySelector('.images').append(imgEL);
+//       resolve(imgEL);
+//     });
+//     imgEL.addEventListener('error', () => {
+//       reject(new Error('Изображение не найдено 💩'));
+//     });
+//   });
+// };
+
+// // createImage('img/img-1.jpg').then(response => console.log('Изображение загружено', response)
+// // ).catch(err => console.error(err.message))
+
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Картинка 1 загружена');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Картинка 2 загружена');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//   })
+//   .catch(err => console.log(`💥 ${err.message}`));
+
+// fetch(`https://restcountries.com/v3.1/name/${country}`).then(res =>
+//   console.log(res),
+// );
+// const renderError = function (msg) {
+//   countriesContainer.insertAdjacentText('beforeend', msg);
+//   countriesContainer.style.opacity = 1;
+// };
+
+// const getPosition = function () {
+//   return new Promise(function (resolve, reject) {
+//     navigator.geolocation.getCurrentPosition(resolve, reject);
+//   });
+// };
+// const renderCountry = function (data, className = '') {
+//   const html = `
+//       <article class="country ${className}">
+//               <img class="country__img" src="${data.flags.svg}" />
+//               <div class="country__data">
+//                 <h3 class="country__name">${data.name.common}</h3>
+//                 <h4 class="country__region">${data.region}</h4>
+//                 <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)}</p>
+//                 <p class="country__row"><span>🗣️</span>${Object.values(data.languages)[0]}</p>
+//                 <p class="country__row"><span>💰</span>${Object.values(data.currencies)[0].name}</p>
+//               </div>
+//             </article>`;
+//   countriesContainer.insertAdjacentHTML('beforeend', html);
+//   countriesContainer.style.opacity = 1;
+// };
+
+// const whereAmI = async function () {
+//   try {
+//     //? Geolacation /////////
+//     const pos = await getPosition();
+//     const { latitude: lat, longitude: lng } = pos.coords;
+
+//     //? Reverse geocoding //////
+//     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+//     const resGeo = await fetch(url, {
+//       headers: {
+//         'User-Agent': 'JsCoursePractice/1.0 (your-real-email@example.com)',
+//       },
+//     });
+
+//     if (!resGeo.ok) throw new Error('Проблемма при получении данных локации');
+
+//     const dataGeo = await resGeo.json();
+//     console.log(dataGeo);
+
+//     //?Country Data //////////
+//     const res = await fetch(
+//       `https://restcountries.com/v3.1/name/${dataGeo.address.country}`,
+//     );
+//     if (!res.ok) throw new Error('Проблемма при получении данных о стране');
+//     const data = await res.json();
+
+//     renderCountry(data[0]);
+//     return `Вы находитесь в ${dataGeo.address.city}, ${dataGeo.address.country}`;
+//   } catch (err) {
+//     console.error(`${err}💥💥💥`);
+//     renderError(`💥 ${err.message}`);
+
+//     // Отклоняем промис возвращаемый асинк функцией
+//     throw err;
+//   }
+// };
+
+// console.log('1. Получим данные о местоположении ');
+// whereAmI()
+//   .then(response => console.log(`2 ${response}`))
+//   .catch(err => console.error(`2 ${err.message}`))
+//   .finally(() => console.log('3 Finished'));
+
+// (async function () {
+//   try {
+//     console.log('1. Получим данные о местоположении ');
+//     const city = await whereAmI();
+//     console.log(city);
+//   } catch (err) {
+//     console.error(`2 ${err.message}`);
+//   }
+//   console.log('3 Finished');
+// })();
+
+// const getJSON = function (url, errorMsg = `Что то пошло не так`) {
+//   return fetch(url).then(response => {
+//     if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+//     return response.json();
+//   });
+// };
+// const get3Countries = async function (c1, c2, c3) {
+//   try {
+//     // const [data1] = await getJSON(`https://restcountries.com/v3.1/name/${c1}`);
+//     // const [data2] = await getJSON(`https://restcountries.com/v3.1/name/${c2}`);
+//     // const [data3] = await getJSON(`https://restcountries.com/v3.1/name/${c3}`);
+//     // console.log([data1.capital, data2.capital, data3.capital]);
+//     const data = await Promise.all([
+//       getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+//       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+//       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+//     ]);
+//     console.log(data.map(d => d[0].capital));
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+// get3Countries('spain', 'russia', 'portugal');
+
+//Promise.race
+// (async function () {
+//   const res = await Promise.race([
+//     getJSON(`https://restcountries.com/v3.1/name/italy`),
+//     getJSON(`https://restcountries.com/v3.1/name/egypt`),
+//     getJSON(`https://restcountries.com/v3.1/name/mexico`),
+//   ]);
+//   console.log(res[0]);
+// })();
+
+// const timeout = function (sec) {
+//   return new Promise(function (_, reject) {
+//     setTimeout(() => {
+//       reject(new Error(`Запрос выполнялся слишком долго `));
+//     }, sec * 1000);
+//   });
+// };
+
+// Promise.race([
+//   getJSON(`https://restcountries.com/v3.1/name/tanzania`),
+//   timeout(1),
+// ])
+//   .then(res => console.log(res[0]))
+//   .catch(err => console.error(err.message));
+
+// //Promise.allSettled
+// Promise.allSettled([
+//   Promise.resolve('Успех'),
+//   Promise.reject('Провал'),
+//   Promise.resolve('Успех'),
+//   Promise.resolve('Успех'),
+//   Promise.reject('Провал'),
+// ]).then(res => console.log(res));
+// // ALL
+// Promise.all([
+//   Promise.resolve('Успех'),
+//   Promise.reject('Провал'),
+//   Promise.resolve('Успех'),
+//   Promise.resolve('Успех'),
+//   Promise.reject('Провал'),
+// ])
+//   .then(res => console.log(res))
+//   .catch(err => console.error(err));
+
+// //Promise.any [es2021]
+// Promise.any([
+//   Promise.resolve('Успех'),
+//   Promise.reject('Провал'),
+//   Promise.resolve('Успех'),
+//   Promise.resolve('Успех'),
+//   Promise.reject('Провал'),
+// ])
+//   .then(res => console.log(res))
+//   .catch(err => console.error(err));
+
 const wait = function (seconds) {
   return new Promise(resolve => {
     setTimeout(resolve, seconds * 1000);
   });
 };
 
-let currentImg;
 const createImage = function (imgPath) {
   return new Promise(function (resolve, reject) {
     const imgEL = document.createElement('img');
     imgEL.src = imgPath;
     imgEL.addEventListener('load', () => {
-      document.querySelector('.images').appendChild(imgEL);
+      document.querySelector('.images').append(imgEL);
       resolve(imgEL);
     });
     imgEL.addEventListener('error', () => {
@@ -478,25 +683,77 @@ const createImage = function (imgPath) {
   });
 };
 
-// createImage('img/img-1.jpg').then(response => console.log('Изображение загружено', response)
-// ).catch(err => console.error(err.message))
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Картинка 1 загружена');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Картинка 2 загружена');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//   })
+//   .catch(err => console.log(`💥 ${err.message}`));
 
-createImage('img/img-1.jpg')
-  .then(img => {
-    currentImg = img;
-    console.log('Картинка 1 загружена');
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-    return createImage('img/img-2.jpg');
-  })
-  .then(img => {
-    currentImg = img;
-    console.log('Картинка 2 загружена');
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-  })
-  .catch(err => console.log(`💥 ${err.message}`));
+// async function loadAll(...arr) {
+//   const imgArr = arr.map(i => createImage(i));
+//   const loadedImgs = await Promise.all(imgArr);
+//  console.log(loadedImgs);
+//  loadedImgs.forEach(i => i.classList.add('parallel'))
+
+// }
+// loadAll('img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg');
+
+// const loadNPause = async function () {
+//   try {
+//     const image = await createImage('img/img-1.jpg');
+//     await wait(2);
+//     image.style.display = 'none';
+//     const image2 = await createImage('img/img-2.jpg');
+//     await wait(2);
+//     image2.style.display = 'none';
+//   } catch (err) {
+//     console.log(`💥 ${err.message}`);
+//   }
+// };
+
+// loadNPause();
+
+//jonas part 1
+const loadNPause = async function () {
+  try {
+    let img = await createImage('img/img-1.jpg');
+    console.log('Загрузили первое изображение 1');
+    await wait(2);
+    img.style.display = 'none';
+    img = await createImage('img/img-2.jpg');
+    console.log('Загрузили первое изображение 2');
+    await wait(2);
+    img.style.display = 'none';
+  } catch (err) {
+    console.error(err);
+  }
+};
+loadNPause();
+
+//jonas part 2
+const loadAll = async function (imgArr) {
+  try {
+    const imgs = imgArr.map(async i => await createImage(i));
+    console.log(imgs);
+    const imgsEl = await Promise.all(imgs);
+    console.log(imgsEl);
+    imgsEl.forEach(el => el.classList.add('parallel'));
+  } catch {
+    console.error(err);
+  }
+};
+loadAll(['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']);
