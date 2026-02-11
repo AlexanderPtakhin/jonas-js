@@ -663,25 +663,25 @@ const countriesContainer = document.querySelector('.countries');
 //   .then(res => console.log(res))
 //   .catch(err => console.error(err));
 
-const wait = function (seconds) {
-  return new Promise(resolve => {
-    setTimeout(resolve, seconds * 1000);
-  });
-};
+// const wait = function (seconds) {
+//   return new Promise(resolve => {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
 
-const createImage = function (imgPath) {
-  return new Promise(function (resolve, reject) {
-    const imgEL = document.createElement('img');
-    imgEL.src = imgPath;
-    imgEL.addEventListener('load', () => {
-      document.querySelector('.images').append(imgEL);
-      resolve(imgEL);
-    });
-    imgEL.addEventListener('error', () => {
-      reject(new Error('Изображение не найдено 💩'));
-    });
-  });
-};
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const imgEL = document.createElement('img');
+//     imgEL.src = imgPath;
+//     imgEL.addEventListener('load', () => {
+//       document.querySelector('.images').append(imgEL);
+//       resolve(imgEL);
+//     });
+//     imgEL.addEventListener('error', () => {
+//       reject(new Error('Изображение не найдено 💩'));
+//     });
+//   });
+// };
 
 // createImage('img/img-1.jpg')
 //   .then(img => {
@@ -726,6 +726,25 @@ const createImage = function (imgPath) {
 // };
 
 // loadNPause();
+const wait = function (seconds) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const imgEL = document.createElement('img');
+    imgEL.src = imgPath;
+    imgEL.addEventListener('load', () => {
+      document.querySelector('.images').append(imgEL);
+      resolve(imgEL);
+    });
+    imgEL.addEventListener('error', () => {
+      reject(new Error('Изображение не найдено 💩'));
+    });
+  });
+};
 
 //jonas part 1
 const loadNPause = async function () {
